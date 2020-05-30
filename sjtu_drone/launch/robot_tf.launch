@@ -1,0 +1,39 @@
+<launch>
+  <group ns="drone">
+    <param name="tf_prefix" value="drone" />
+    <node name="drone_broadcaster" pkg="sjtu_drone" type="multiple_broadcaster_1.py" respawn="false" output="screen">
+      <param name="robot" type="string" value="drone" />
+    </node>
+  </group>
+  <group ns="robot2">
+    <param name="tf_prefix" value="robot2" />
+    <node name="robot2_tf_broadcaster" pkg="sjtu_drone" type="multiple_broadcaster.py" respawn="false" output="screen">
+      <param name="robot" type="string" value="robot2" />
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x 10 -y -9 -z 0.5" />
+      <arg name="robot_name" value="robot2" />
+    </include>
+  </group>
+  <group ns="robot3">
+    <param name="tf_prefix" value="robot3" />
+    <node name="robot3_tf_broadcaster" pkg="sjtu_drone" type="multiple_broadcaster.py" respawn="false" output="screen">
+      <param name="robot" type="string" value="robot3" />
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x -9 -y 10 -z 0.5" />
+      <arg name="robot_name" value="robot3" />
+    </include>
+  </group>
+  <group ns="gs">
+    <param name="tf_prefix" value="gs" />
+    <node name="gs_tf_broadcaster" pkg="sjtu_drone" type="multiple_broadcaster.py" respawn="false" output="screen">
+      <param name="robot" type="string" value="gs" />
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x 10 -y 10 -z 0" />
+      <arg name="robot_name" value="gs" />
+    </include>
+  </group>
+  <node pkg="sjtu_drone" type="imp.py" name="main" />
+</launch>

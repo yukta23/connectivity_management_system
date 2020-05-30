@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+	 <include>
+      <uri>model://jersey_barrier</uri>
+	<name>jb_1</name>
+	<pose>1 7 0 0 0 1.57</pose>
+    </include>
+	<include>
+	<uri>model://jersey_barrier</uri>
+	<name>jb_2</name>
+	<pose>1 1 0 0 0 1.57</pose>
+    </include>
+    <include>
+	<uri>model://jersey_barrier</uri>
+	<name>jb_3</name>
+	<pose>-5 -4 0 0 0 0</pose>
+    </include>
+    <include>
+	<uri>model://jersey_barrier</uri>
+	<name>jb_4</name>
+	<pose>1 -10 0 0 0 0</pose>
+    </include>
+    <include>
+	<uri>model://jersey_barrier</uri>
+	<name>jb_5</name>
+	<pose>10 -4 0 0 0 -1.57</pose>
+    </include>
+    <include>
+	<uri>model://construction_barrel</uri>
+	<name>cb_1</name>
+	<pose>-1 -4 0 0 0 0</pose>
+    </include>
+    <include>
+	<uri>model://construction_barrel</uri>
+	<name>cb_2</name>
+	<pose>10 -10 0 0 0 0</pose>
+    </include>
+  </world>
+</sdf>

@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<robot name="robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="PI" value="3.1415926535897931" />
+    <xacro:property name="chassisHeight" value="0.1" />
+    <xacro:property name="chassisLength" value="0.4" />
+    <xacro:property name="chassisWidth" value="0.2" />
+    <xacro:property name="chassisMass" value="50" />
+    <xacro:property name="casterRadius" value="0.05" />
+    <xacro:property name="casterMass" value="5" />
+    <xacro:property name="wheelWidth" value="0.05" />
+    <xacro:property name="wheelRadius" value="0.1" />
+    <xacro:property name="wheelPos" value="0.2" />
+    <xacro:property name="wheelMass" value="5" />
+    <xacro:include filename="$(find urdf_tutorial)/urdf/macros.xacro" />
+    <material name="orange">
+  	<color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
+    </material>
+	
+    <material name="red">
+	  <color rgba="0.8 0.0 0.0 1.0"/>
+    </material>
+
+    <link name='chassis'>
+    <collision>
+        <origin xyz="0 0 0.1" rpy="0 0 0" />
+        <geometry>
+            <box size="0.4 0.2 0.1" />
+        </geometry>
+    </collision>
+    <visual>
+        <origin xyz="0 0 0.1" rpy="0 0 0" />
+        <geometry>
+            <box size="0.4 0.2 0.1" />
+        </geometry>
+
+    </visual>
+    <inertial>
+        <origin xyz="0 0 0.1" rpy="0 0 0" />
+        <mass value="50" />
+        <inertia ixx="0.4" ixy="0" ixz="0" iyy="0.2" iyz="0" izz="0.1" />
+    </inertial>
+    </link>
+    <link name="footprint" />
+    <joint name="base_joint" type="fixed">
+        <parent link="footprint" />
+        <child link="chassis" />
+    </joint>
+
+    <link name="caster_wheel">
+    <collision>
+        <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0" />
+        <geometry>
+            <sphere radius="${casterRadius}" />
+        </geometry>
+    </collision>
+    <visual>
+        <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0" />
+        <geometry>
+            <sphere radius="${casterRadius}" />
+        </geometry>
+        <material name="red" />
+    </visual>
+    <inertial>
+        <origin xyz="${casterRadius-chassisLength/2} 0 ${casterRadius-chassisHeight+wheelRadius}" rpy="0 0 0" />
+        <mass value="${casterMass}" />
+        <sphere_inertia m="${casterMass}" r="${casterRadius}" />
+    </inertial>
+    </link>
+
+    <joint name="fixed" type="fixed">
+        <parent link="chassis" />
+        <child link="caster_wheel" />
+    </joint>
+
+
+
+    <link name="left_wheel">
+    <collision>
+        <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+        <geometry>
+            <cylinder length="${wheelWidth}" radius="${wheelRadius}" />
+        </geometry>
+    </collision>
+    <visual>
+        <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+        <geometry>
+            <cylinder length="${wheelWidth}" radius="${wheelRadius}" />
+        </geometry>
+        <material name="black" />
+    </visual>
+    <inertial>
+        <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+        <mass value="${wheelMass}" />
+        <cylinder_inertia m="${wheelMass}" r="${wheelRadius}" h="${wheelWidth}" />
+    </inertial>
+    <surface>
+        
+      </surface>
+    </link>
+
+    <joint name="left_wheel_hinge" type="continuous">
+        <parent link="chassis" />
+        <child link="left_wheel" />
+        <origin xyz="${-wheelPos+chassisLength/2} ${wheelWidth/2+1*chassisWidth/2} ${wheelRadius}" rpy="0 0 0" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+        <limit effort="100" velocity="100" />
+        <joint_properties damping="0.0" friction="0.5" />
+    </joint>
+
+    <link name="right_wheel">
+    <collision>
+        <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+        <geometry>
+            <cylinder length="${wheelWidth}" radius="${wheelRadius}" />
+        </geometry>
+    </collision>
+    <visual>
+        <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+        <geometry>
+            <cylinder length="${wheelWidth}" radius="${wheelRadius}" />
+        </geometry>
+        <material name="black" />
+    </visual>
+    <inertial>
+        <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+        <mass value="${wheelMass}" />
+        <cylinder_inertia m="${wheelMass}" r="${wheelRadius}" h="${wheelWidth}" />
+    </inertial>
+    <surface>
+         
+      </surface>
+    </link>
+
+    <joint name="right_wheel_hinge" type="continuous">
+        <parent link="chassis" />
+        <child link="right_wheel" />
+        <origin xyz="${-wheelPos+chassisLength/2} ${-1*wheelWidth/2-1*chassisWidth/2} ${wheelRadius}" rpy="0 0 0" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+        <limit effort="100" velocity="100" />
+        <joint_properties damping="0.0" friction="0.5" />
+    </joint>
+
+
+    <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="left_wheel_hinge">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="tran2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="right_wheel_hinge">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+   <gazebo reference="chassis">
+  		<material>Gazebo/Orange</material>
+   </gazebo>
+   <gazebo reference="caster_wheel">
+        <mu1>0.5</mu1>
+  	<mu2>0.5</mu2>
+  	<material>Gazebo/Red</material>
+   </gazebo>
+   <gazebo reference="left_wheel">
+        <mu1>0.5</mu1>
+  	<mu2>0.5</mu2>
+  	<material>Gazebo/Red</material>
+   </gazebo>
+   <gazebo reference="right_wheel">
+        <mu1>0.5</mu1>
+  	<mu2>0.5</mu2>
+  	<material>Gazebo/Red</material>
+   </gazebo>
+   <gazebo>
+	 <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+	 <robotNamespace></robotNamespace>
+	 <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+         <legacyModeNS>false</legacyModeNS>
+	 </plugin>
+  </gazebo>
+<gazebo>
+        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+            <alwaysOn>true</alwaysOn>
+            <legacyMode>false</legacyMode>
+            <updateRate>100</updateRate>
+            <leftJoint>left_wheel_hinge</leftJoint>
+            <rightJoint>right_wheel_hinge</rightJoint>
+            <wheelSeparation>${chassisWidth+wheelWidth}</wheelSeparation>
+            <wheelDiameter>${2*wheelRadius}</wheelDiameter>
+             
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom_diffdrive</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <robotBaseFrame>footprint</robotBaseFrame>
+        </plugin>
+    </gazebo>
+   
+   
+</robot>
