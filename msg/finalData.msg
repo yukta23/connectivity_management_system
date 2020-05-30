@@ -1,0 +1,15 @@
+std_msgs/Header header
+string sender
+string group
+uint8 leader_id
+float64[] data
+int8[] path
+uint8 loc_data
+uint8 sensor_data
+float64 latitude
+float64 longitude
+float64 x
+float64 y
+string origin
+uint8 drone
+string ping

@@ -1,0 +1,94 @@
+<launch>
+    <group ns="gs">
+    <node name="gsNode" pkg="m2wr_description" type="gs.py" respawn="false" output="screen">
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x 10 -y 10 -z 0.5" />
+      <arg name="robot_name" value="gs" />
+    </include>
+  </group>
+    
+  <group ns="drone">
+    <node name="droneNode" pkg="m2wr_description" type="drone.py" respawn="false" output="screen">
+    </node>
+  </group>
+
+  <group ns="drone">
+    <node name="terminals" pkg="m2wr_description" type="imp.py" respawn="false">
+    </node>
+  </group>
+    
+    <group ns="grp1_r0">
+    <node name="grp1_r0" pkg="m2wr_description" type="reading_laser.py" respawn="false" output="screen" >
+      <param name="robot" type="string" value="grp1_r0" />
+      <param name="grp" type="string" value="grp1" />
+     <param name="boundary" type="string" value="0,7,0,7" />
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x 1 -y 1 -z 0.5" />
+      <arg name="robot_name" value="grp1_r0" />
+    </include>
+  </group>
+
+   <group ns="grp1_r1">
+    <node name="grp1_r1" pkg="m2wr_description" type="reading_laser.py" respawn="false" output="screen" >
+      <param name="robot" type="string" value="grp1_r1" />
+      <param name="grp" type="string" value="grp1" />
+      <param name="boundary" type="string" value="0,7,0,7" />    
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x 5 -y 1 -z 0.5 -R 0 -P -0.34444 -Y -1.065" />
+      <arg name="robot_name" value="grp1_r1" />
+    </include>
+  </group>
+
+  <group ns="grp1_r2">
+    <node name="grp1_r2" pkg="m2wr_description" type="reading_laser.py" respawn="false" output="screen" >
+      <param name="robot" type="string" value="grp1_r2" />
+      <param name="grp" type="string" value="grp1" />
+      <param name="boundary" type="string" value="0,7,0,7" />
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x 3 -y 6 -z 0.5 -R 0 -P 0.34444  -Y 1.065" />
+      <arg name="robot_name" value="grp1_r2" />
+    </include>
+  </group>
+
+
+  <group ns="grp2_r0">
+    <node name="grp2_r0" pkg="m2wr_description" type="reading_laser.py" respawn="false" output="screen">
+      <param name="robot" type="string" value="grp2_r0" />
+      <param name="grp" type="string" value="grp2" />
+      <param name="boundary" type="string" value="-7,0,-7,0" />
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x -1 -y -1 -z 0.5" />
+      <arg name="robot_name" value="grp2_r0" />
+    </include>
+  </group> 
+
+    <group ns="grp2_r1">
+    <node name="grp2_r1" pkg="m2wr_description" type="reading_laser.py" respawn="false" output="screen">
+      <param name="robot" type="string" value="grp2_r1" />
+      <param name="grp" type="string" value="grp2" />
+      <param name="boundary" type="string" value="-7,0,-7,0" />
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x -5 -y -1 -z 0.5 -R 0 -P -0.34444 -Y -1.065" />
+      <arg name="robot_name" value="grp2_r1" />
+    </include>
+  </group>
+  
+  <group ns="grp2_r2">
+    <node name="grp2_r2" pkg="m2wr_description" type="reading_laser.py" respawn="false" output="screen">
+      <param name="robot" type="string" value="grp2_r2" />
+      <param name="grp" type="string" value="grp2" />
+      <param name="boundary" type="string" value="-7,0,-7,0" />
+    </node>
+    <include file="$(find m2wr_description)/launch/controller.launch">
+      <arg name="init_pose" value="-x -3 -y -6 -z 0.5 -R 0 -P 0.34444  -Y 1.065" />
+      <arg name="robot_name" value="grp2_r2" />
+    </include>
+  </group> 
+
+</launch>
